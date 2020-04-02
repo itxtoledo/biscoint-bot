@@ -1,4 +1,5 @@
 import Biscoint from "biscoint-api-node";
+import Bottleneck from "bottleneck";
 import { handleMessage, handleError, percent } from "./utils";
 import config from "./config.js";
 
@@ -15,6 +16,21 @@ const bc = new Biscoint({
   apiKey: config.key,
   apiSecret: config.secret
 });
+
+const limiter = {
+  getOffer: new Bottleneck({
+    reservoir: 30,
+    reservoirRefreshAmount: 30,
+    reservoirRefreshInterval: 60 * 1000,
+    maxConcurrent: 1
+  }),
+  confirmOffer: new Bottleneck({
+    reservoir: 30,
+    reservoirRefreshAmount: 30,
+    reservoirRefreshInterval: 60 * 1000,
+    maxConcurrent: 1
+  })
+};
 
 handleMessage("Successfully started");
 
