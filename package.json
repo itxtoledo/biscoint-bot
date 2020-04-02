@@ -1,0 +1,14 @@
+{
+  "name": "biscoint-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:itxtoledo/biscoint-bot.git",
+  "author": "<gugurock50@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "biscoint-api-node": "^1.2.0",
+    "bottleneck": "^2.19.5",
+    "esm": "^3.2.25",
+    "moment": "^2.24.0"
+  }
+}
