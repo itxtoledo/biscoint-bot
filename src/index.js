@@ -9,12 +9,12 @@ let {
   minProfitPercent,
   intervalMs,
   test,
-  differencelogger
+  differencelogger,
 } = config;
 
 const bc = new Biscoint({
   apiKey: config.key,
-  apiSecret: config.secret
+  apiSecret: config.secret,
 });
 
 const limiter = {
@@ -22,34 +22,41 @@ const limiter = {
     reservoir: 30,
     reservoirRefreshAmount: 30,
     reservoirRefreshInterval: 60 * 1000,
-    maxConcurrent: 1
+    maxConcurrent: 1,
   }),
   confirmOffer: new Bottleneck({
     reservoir: 30,
     reservoirRefreshAmount: 30,
     reservoirRefreshInterval: 60 * 1000,
-    maxConcurrent: 1
-  })
+    maxConcurrent: 1,
+  }),
 };
 
 handleMessage("Successfully started");
 
 let sellOffer = null,
   buyOffer = null,
-  lastTrade = 0;
+  lastTrade = 0,
+  tradeCycleCount = 0;
 
 setInterval(async () => {
   try {
-    sellOffer = await bc.offer({
-      amount,
-      isQuote: false,
-      op: "sell"
-    });
-    buyOffer = await bc.offer({
-      amount,
-      isQuote: false,
-      op: "buy"
-    });
+    tradeCycleCount += 1;
+    sellOffer = await limiter.getOffer.schedule(() =>
+      bc.offer({
+        amount,
+        isQuote: false,
+        op: "sell",
+      })
+    );
+
+    buyOffer = await limiter.getOffer.schedule(() =>
+      bc.offer({
+        amount,
+        isQuote: false,
+        op: "buy",
+      })
+    );
   } catch (error) {
     handleError("Error on get offer", error);
   }
@@ -66,7 +73,7 @@ setInterval(async () => {
           handleMessage("Success on sell");
           try {
             await bc.confirmOffer({
-              offerId: buyOffer.offerId
+              offerId: buyOffer.offerId,
             });
             handleMessage("Success on buy");
             lastTrade = Date.now();
@@ -112,7 +119,7 @@ async function forceConfirm(side, oldPrice) {
     const offer = await bc.offer({
       amount,
       isQuote: false,
-      op: side
+      op: side,
     });
 
     // if side is buy then compare with sell price
