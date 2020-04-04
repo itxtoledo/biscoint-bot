@@ -17,20 +17,12 @@ const bc = new Biscoint({
   apiSecret: config.secret,
 });
 
-const limiter = {
-  getOffer: new Bottleneck({
-    reservoir: 30,
-    reservoirRefreshAmount: 30,
-    reservoirRefreshInterval: 60 * 1000,
-    maxConcurrent: 1,
-  }),
-  confirmOffer: new Bottleneck({
-    reservoir: 30,
-    reservoirRefreshAmount: 30,
-    reservoirRefreshInterval: 60 * 1000,
-    maxConcurrent: 1,
-  }),
-};
+const limiter = new Bottleneck({
+  reservoir: 30,
+  reservoirRefreshAmount: 30,
+  reservoirRefreshInterval: 60 * 1000,
+  maxConcurrent: 1,
+});
 
 handleMessage("Successfully started");
 
@@ -41,8 +33,7 @@ let sellOffer = null,
 
 setInterval(async () => {
   try {
-    tradeCycleCount += 1;
-    sellOffer = await limiter.getOffer.schedule(() =>
+    sellOffer = await limiter.schedule(() =>
       bc.offer({
         amount,
         isQuote: false,
@@ -50,7 +41,7 @@ setInterval(async () => {
       })
     );
 
-    buyOffer = await limiter.getOffer.schedule(() =>
+    buyOffer = await limiter.schedule(() =>
       bc.offer({
         amount,
         isQuote: false,
@@ -69,13 +60,18 @@ setInterval(async () => {
       if (initialSell) {
         /* initial sell */
         try {
-          await bc.confirmOffer({ offerId: sellOffer.offerId });
+          await limiter.schedule(() =>
+            bc.confirmOffer({ offerId: sellOffer.offerId })
+          );
           handleMessage("Success on sell");
           try {
-            await bc.confirmOffer({
-              offerId: buyOffer.offerId,
-            });
+            await limiter.schedule(() =>
+              bc.confirmOffer({
+                offerId: buyOffer.offerId,
+              })
+            );
             handleMessage("Success on buy");
+            tradeCycleCount += 1;
             lastTrade = Date.now();
           } catch (error) {
             handleError("Error on buy, retrying", error);
@@ -91,11 +87,16 @@ setInterval(async () => {
       } else {
         /* initial buy */
         try {
-          await bc.confirmOffer({ offerId: buyOffer.offerId });
+          await limiter.schedule(() =>
+            bc.confirmOffer({ offerId: buyOffer.offerId })
+          );
           handleMessage("Success on buy");
           try {
-            await bc.confirmOffer({ offerId: sellOffer.offerId });
+            await limiter.schedule(() =>
+              bc.confirmOffer({ offerId: sellOffer.offerId })
+            );
             handleMessage("Success on sell");
+            tradeCycleCount += 1;
             lastTrade = Date.now();
             handleMessage(`Success, profit: + ${profit.toFixed(3)}%`);
           } catch (error) {
@@ -116,18 +117,20 @@ setInterval(async () => {
 
 async function forceConfirm(side, oldPrice) {
   try {
-    const offer = await bc.offer({
-      amount,
-      isQuote: false,
-      op: side,
-    });
+    const offer = await limiter.schedule(() =>
+      bc.offer({
+        amount,
+        isQuote: false,
+        op: side,
+      })
+    );
 
     // if side is buy then compare with sell price
     if (
       (side === "buy" && oldPrice * 1.001 >= Number(offer.efPrice)) ||
       (side === "sell" && oldPrice * 0.999 <= Number(offer.efPrice))
     ) {
-      await bc.confirmOffer({ offerId: offer.offerId });
+      await limiter.schedule(() => bc.confirmOffer({ offerId: offer.offerId }));
       handleMessage("Success on retry");
     } else throw "Error on forceConfirm, price is much distant";
   } catch (error) {
