@@ -5,6 +5,10 @@
   "repository": "git@github.com:itxtoledo/biscoint-bot.git",
   "author": "<gugurock50@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node -r esm ./src/index.js",
+    "dev": "nodemon -r esm ./src/index.js"
+  },
   "dependencies": {
     "biscoint-api-node": "^1.2.0",
     "bottleneck": "^2.19.5",

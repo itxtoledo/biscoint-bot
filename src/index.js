@@ -48,10 +48,7 @@ setInterval(async () => {
         op: "buy",
       })
     );
-  } catch (error) {
-    handleError("Error on get offer", error);
-  }
-  if (Date.now() - lastTrade >= intervalMs) {
+
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
       handleMessage(`Difference now: ${profit.toFixed(3)}%`);
@@ -112,6 +109,8 @@ setInterval(async () => {
         }
       }
     }
+  } catch (error) {
+    handleError("Error on get offer", error);
   }
 }, intervalMs);
 
