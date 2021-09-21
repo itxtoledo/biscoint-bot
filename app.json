@@ -1,0 +1,106 @@
+{
+  "name": "bitcoin-bot",
+  "description": "Arbitragem com Bitcoin",
+  "logo": "https://biscoint.io/images/biscoint-icon.svg",
+  "repository": "https://github.com/ghostnetrn/biscoint-arbitrage-bot",
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "keywords": [
+    "node",
+    "bitcoin",
+    "trading",
+    "trader",
+    "bot",
+    "market",
+    "maker",
+    "algo",
+    "crypto"
+  ],
+  "env": {
+    "apiKey": {
+      "description": "Sua API Key da Biscoint",
+      "required": true
+    },
+    "apiSecret": {
+      "description": "Sua API Secret da Biscoint",
+      "required": true
+    },
+    "initialBuy": {
+      "description": "Valor inicial de venda. Valor padrao: true",
+      "required": true,
+      "value": "true"
+    },
+    "botchat": {
+      "description": "Chat id do Telegram. Exemplo: 14872718712",
+      "required": true
+    },
+    "token": {
+      "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
+      "required": true
+    },
+    "executeMissedSecondLeg": {
+      "description": "executeMissedSecondLeg",
+      "required": true,
+      "value": "true"
+    },
+    "amount": {
+      "description": "Informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 300 e amountCurrency: 'BRL'. Valor padrão: 300.",
+      "required": true,
+      "value": "300.00"
+    },
+    "amountCurrency": {
+      "description": "informe a moeda, 'BRL', 'BTC' ou 'ETH', em que está especificada a quantidade (parâmetro amount). A moeda fiat padrão é 'BRL', e a criptomoeda padrão é 'BTC', por exemplo, se especificar 'BRL' a arbitragem será realizada no par BRL/BTC, e caso especifique 'ETH', a arbitragem será realizada no par BRL/ETH. O seu eventual lucro (ou prejuízo) de arbitragem será acumulado na moeda oposta, ou seja, se especificar 'BRL', seu lucro será acumulado em BTC, e se especificar 'BTC', seu lucro será acumulado em BRL. Valor padrão: 'BRL'.",
+      "required": true,
+      "value": "BRL"
+    },
+    "minProfitPercent": {
+      "description": "Percentual de lucro para acionar o bot",
+      "required": true,
+      "value": "0.03"
+    },
+    "valorInicial": {
+      "description": "Valor inicial que você depositou",
+      "required": true,
+      "value": "300.00"
+    },
+    "dataInicial": {
+      "description": "Data que o bot iniciou. xx/xx/xxxx",
+      "required": true,
+      "value": "15/03/2020"
+    },
+    "botId": {
+      "description": "Id do bot: bot_1 ou bot_2",
+      "required": true,
+      "value": "bot_1"
+    },
+    "simulation": {
+      "description": "Ativar modo simulação",
+      "required": true,
+      "value": "false"
+    },
+    "host1": {
+      "description": "Servidor principal do bot",
+      "required": true,
+      "value": "localhost"
+    },
+    "port": {
+      "description": "Servidor secundário do bot",
+      "required": true,
+      "value": "80"
+    },
+    "multibot": {
+      "description": "Servidor secundário do bot",
+      "required": true,
+      "value": "false"
+    },
+    "intervalSeconds": {
+      "description": "Intervalo em segundos. Padrão false",
+      "required": true,
+      "value": "false"
+    }
+  }
+}
