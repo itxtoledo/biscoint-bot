@@ -2,7 +2,7 @@
   "name": "bitcoin-bot",
   "description": "Arbitragem com Bitcoin",
   "logo": "https://biscoint.io/images/biscoint-icon.svg",
-  "repository": "https://github.com/ghostnetrn/biscoint-arbitrage-bot",
+  "repository": "https://github.com/itxtoledo/biscoint-bot",
   "formation": {
     "worker": {
       "quantity": 1,
