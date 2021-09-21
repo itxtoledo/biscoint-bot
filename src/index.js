@@ -24,11 +24,23 @@ const keyboard = Markup.inlineKeyboard(
   [
     Markup.button.callback('\u{1F9FE} Balance', 'balance'),
     Markup.button.callback('\u{1F9FE} Configs', 'configs'),
+    Markup.button.callback('\u{1F51B} Test Mode', 'test'),
     Markup.button.url('₿', 'https://www.biscoint.io')
   ], { columns: 2 })
 
 bot.action('balance', async (ctx) => {
-  await checkBalances();
+  if (test) {
+    test = false
+    ctx.reply('Modo test desativado!')
+  } else {
+    test = true
+    ctx.reply('Modo test ativado!')
+  }
+}
+);
+
+bot.action('test', async (ctx) => {
+
 }
 );
 
@@ -73,6 +85,7 @@ async function trade() {
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
       handleMessage(`Difference now: ${profit.toFixed(3)}%`);
+    handleMessage(`Test mode: ${test}`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`Profit found: ${profit.toFixed(3)}%`);
       bot.telegram.sendMessage(botchat, `Profit found: ${profit.toFixed(3)}%`, keyboard)
