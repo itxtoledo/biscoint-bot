@@ -170,10 +170,10 @@ const checkBalances = async () => {
 
   await bot.telegram.sendMessage(botchat,
     `\u{1F911} Balanço:
-    <b>Status</b>: ${test ? `\u{1F51B} Modo simulação.` : `\u{1F6D1} Robô operando.`} 
-    Depósito Inicial: R$ ${amount}  
-    <b>BRL:</b> ${BRL} 
-    <b>BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
+<b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
+Depósito Inicial: R$ ${amount}  
+<b>BRL:</b> ${BRL} 
+<b>BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
 `, { parse_mode: "HTML" });
   await bot.telegram.sendMessage(botchat, "Balance!", keyboard)
 
