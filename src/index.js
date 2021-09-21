@@ -1,14 +1,41 @@
 import Biscoint from "biscoint-api-node";
 import Bottleneck from "bottleneck";
 import { handleMessage, handleError, percent } from "./utils";
-import config from "./config.js";
+//import config from "./config.js";
+import { Telegraf, Markup } from 'telegraf';
 
-let { amount, initialSell, intervalMs, test, differencelogger } = config;
+//let { amount, initialSell, intervalMs, test, differencelogger } = config;
+
+let {
+  apiKey, apiSecret, amount, initialSell, intervalMs, test,
+  differencelogger, token, botchat
+} = require("./env")
 
 const bc = new Biscoint({
-  apiKey: config.key,
-  apiSecret: config.secret,
+  apiKey: apiKey,
+  apiSecret: apiSecret,
 });
+
+// Telegram
+const bot = new Telegraf(token)
+
+const keyboard = Markup.inlineKeyboard(
+  [
+    Markup.button.callback('\u{1F9FE} Configs', 'configs'),
+    Markup.button.url('₿', 'https://www.biscoint.io')
+  ], { columns: 2 })
+
+bot.action('configs', (ctx) => {
+  ctx.replyWithMarkdown(`
+    *intervalMs*: ${intervalMs}
+    *test*: ${test}
+    *amount*: ${amount}
+    *differencelogger*: ${differencelogger}
+    `, keyboard)
+}
+);
+
+// Telegram End
 
 const limiter = new Bottleneck({
   reservoir: 30,
@@ -18,6 +45,7 @@ const limiter = new Bottleneck({
 });
 
 handleMessage("Successfully started");
+bot.telegram.sendMessage(botchat, 'Successfully started', keyboard)
 
 let tradeCycleCount = 0;
 
@@ -40,6 +68,7 @@ async function trade() {
       handleMessage(`Difference now: ${profit.toFixed(3)}%`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`Profit found: ${profit.toFixed(3)}%`);
+      bot.telegram.sendMessage(botchat, `Profit found: ${profit.toFixed(3)}%`, keyboard)
       if (initialSell) {
         /* initial sell */
         try {
@@ -62,6 +91,7 @@ async function trade() {
           }
         } catch (error) {
           handleError("Error on sell", error);
+          bot.telegram.sendMessage(botchat, `Error on sell: ${error}`, keyboard)
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first buy");
@@ -87,6 +117,7 @@ async function trade() {
           }
         } catch (error) {
           handleError("Error on buy", error);
+          bot.telegram.sendMessage(botchat, `Error on buy: ${error}`, keyboard)
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first sell");
@@ -121,5 +152,8 @@ async function forceConfirm(side, oldPrice) {
     } else throw "Error on forceConfirm, price is much distant";
   } catch (error) {
     handleError("Error on force confirm", error);
+    bot.telegram.sendMessage(botchat, `Error on force confirm: ${error}`, keyboard)
   }
 }
+
+bot.launch()
