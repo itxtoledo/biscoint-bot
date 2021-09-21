@@ -29,12 +29,12 @@ const keyboard = Markup.inlineKeyboard(
   ], { columns: 2 })
 
 bot.action('balance', async (ctx) => {
-  if (test) {
-    test = false
-    ctx.reply('Modo test desativado!')
-  } else {
+  if (test === false) {
     test = true
-    ctx.reply('Modo test ativado!')
+    ctx.reply('\u{1F6D1} Modo test ativado!', keyboard);
+  } else {
+    test = false
+    ctx.replyWithMarkdown(`\u{1F911} Modo test desativado!`, keyboard);
   }
 }
 );
