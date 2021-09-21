@@ -22,11 +22,11 @@
   ],
   "env": {
     "apiKey": {
-      "description": "Sua API Key da Biscoint",
+      "description": "API Key Biscoint",
       "required": true
     },
     "apiSecret": {
-      "description": "Sua API Secret da Biscoint",
+      "description": "API Secret Biscoint",
       "required": true
     },
     "initialSell": {
