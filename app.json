@@ -30,9 +30,9 @@
       "required": true
     },
     "initialSell": {
-      "description": "Valor inicial de compra. Valor padrao: false",
+      "description": "Valor inicial de compra. Valor padrao: true",
       "required": true,
-      "value": "false"
+      "value": "true"
     },
     "botchat": {
       "description": "Chat id do Telegram. Exemplo: 14872718712",
