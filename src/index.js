@@ -29,6 +29,11 @@ const keyboard = Markup.inlineKeyboard(
   ], { columns: 2 })
 
 bot.action('balance', async (ctx) => {
+  checkBalances();
+}
+);
+
+bot.action('test', async (ctx) => {
   if (test === false) {
     test = true
     ctx.reply('\u{1F6D1} Modo test ativado!', keyboard);
@@ -36,11 +41,6 @@ bot.action('balance', async (ctx) => {
     test = false
     ctx.replyWithMarkdown(`\u{1F911} Modo test desativado!`, keyboard);
   }
-}
-);
-
-bot.action('test', async (ctx) => {
-
 }
 );
 
