@@ -4,6 +4,12 @@
   "main": "index.js",
   "repository": "git@github.com:itxtoledo/biscoint-bot.git",
   "author": "<gugurock50@gmail.com>",
+  "contributors": [
+    {
+      "email": "precisosabernet@gmail.com",
+      "name": "Almeida"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "start": "node -r esm ./src/index.js",
@@ -13,6 +19,9 @@
     "biscoint-api-node": "^1.2.4",
     "bottleneck": "^2.19.5",
     "esm": "^3.2.25",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "telegraf": "^4.4.1",
+    "dotenv": "8.2.0",
+    "envalid": "7.0.0"
   }
 }
