@@ -29,23 +29,20 @@
       "description": "API Secret Biscoint",
       "required": true
     },
+    "amount": {
+      "description": "Valor em Bitcoin que será usado para fazer arbitragem. Deixe um valor menor do que o saldo na corretora, pois o robô pode ficar vendido ou comprado em alguma operação.",
+      "required": true,
+      "value": "0.001"
+    },
     "initialSell": {
-      "description": "Valor inicial de compra. Valor padrao: true",
+      "description": "Se o seu saldo estiver em Bitcoin, deixe o campo como true. Valor padrao: true",
       "required": true,
       "value": "true"
     },
-    "botchat": {
-      "description": "Chat id do Telegram. Exemplo: 14872718712",
-      "required": true
-    },
-    "token": {
-      "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
-      "required": true
-    },
-    "amount": {
-      "description": "Valor em Bitcoin.",
+    "intervalMs": {
+      "description": "Intervalo em milissegundo.",
       "required": true,
-      "value": "0.001"
+      "value": "5500"
     },
     "test": {
       "description": "Ativar modo simulação",
@@ -57,10 +54,13 @@
       "required": true,
       "value": "true"
     },
-    "intervalMs": {
-      "description": "Intervalo em milissegundo.",
-      "required": true,
-      "value": "5500"
+    "botchat": {
+      "description": "Chat id do Telegram. Exemplo: 14872718712",
+      "required": true
+    },
+    "token": {
+      "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
+      "required": true
     }
   }
 }

@@ -20,20 +20,47 @@ const bc = new Biscoint({
 const bot = new Telegraf(token)
 let balances
 
-const keyboard = Markup.inlineKeyboard(
-  [
-    Markup.button.callback('\u{1F9FE} Balance', 'balance'),
-    Markup.button.callback('\u{1F9FE} Configs', 'configs'),
-    Markup.button.callback('\u{1F51B} Test Mode', 'test'),
-    Markup.button.url('₿', 'https://www.biscoint.io')
-  ], { columns: 2 })
+// const keyboard = Markup.inlineKeyboard(
+//   [
+//     Markup.button.callback('\u{1F9FE} Balance', 'balance'),
+//     Markup.button.callback('\u{1F9FE} Configs', 'configs'),
+//     Markup.button.callback('\u{1F51B} Test Mode', 'test'),
+//     Markup.button.url('₿', 'https://www.biscoint.io')
+//   ], { columns: 2 })
 
-bot.action('balance', async (ctx) => {
+const keyboard = Markup.keyboard([
+  ['🧾 Balance', '🔍 BTC Price'], // Row1 with 2 buttons
+  ['☸ Configs', '📖 Help'], // Row2 with 2 buttons
+  ['🔛 Test Mode', '📢 ₿'] // Row3 with 2 buttons
+])
+  .oneTime()
+  .resize()
+
+  bot.hears('📖 Help', async (ctx) => {
+    ctx.replyWithMarkdown(
+  `*Comandos disponíveis:* 
+      ============  
+  *🧾 Balance:* Extrato resumido do saldo na corretora.\n
+  *🔍 BTC Price:* Último preço do Bitcoin na corretora.\n
+  *☸ Configs:* Configurações do Bot.\n
+  *🔛 Test Mode:* Ativar/Desativar modo simulação.\n
+  *📢 ₿:* Acessar a corretora.\n
+      ============
+      `, keyboard)
+  }
+  );
+
+bot.hears('📢 ₿', async (ctx) => {
+    ctx.reply('Clique para acessar a corretora https://biscoint.io', keyboard);
+  }
+);
+
+bot.hears('🧾 Balance', async (ctx) => {
   checkBalances();
 }
 );
 
-bot.action('test', async (ctx) => {
+bot.hears('🔛 Test Mode', async (ctx) => {
   if (test === false) {
     test = true
     ctx.reply('\u{1F6D1} Modo test ativado!', keyboard);
@@ -46,15 +73,23 @@ bot.action('test', async (ctx) => {
 }
 );
 
-bot.action('configs', (ctx) => {
+bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
-*intervalMs*: ${intervalMs}
-*test*: ${test}
-*amount*: ${amount}
-*differencelogger*: ${differencelogger}
+*Intervalo*: ${intervalMs}ms
+*Modo teste*: ${test}
+*Saldo*: ${amount}
     `, keyboard)
 }
 );
+
+bot.hears('🔍 BTC Price', async (ctx) => {
+  let priceBTC = await bc.ticker();
+  ctx.replyWithMarkdown(`
+*Preço BTC*: ${Number(priceBTC.last).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+    `, keyboard)
+}
+);
+
 
 // Telegram End
 
@@ -65,7 +100,7 @@ const limiter = new Bottleneck({
   maxConcurrent: 1,
 });
 
-handleMessage("Successfully started");
+handleMessage("\u{1F911} Iniciando Trades!");
 bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando Trades!', keyboard)
 
 let tradeCycleCount = 0;
@@ -86,10 +121,10 @@ async function trade() {
 
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
-      handleMessage(`Difference now: ${profit.toFixed(3)}%`);
+      handleMessage(`Variação de preço: ${profit.toFixed(3)}%`);
     handleMessage(`Test mode: ${test}`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
-      handleMessage(`Profit found: ${profit.toFixed(3)}%`);
+      handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
       bot.telegram.sendMessage(botchat, `Profit found: ${profit.toFixed(3)}%`, keyboard)
       if (initialSell) {
         /* initial sell */
@@ -189,7 +224,7 @@ const checkBalances = async () => {
 <b>BRL:</b> ${BRL} 
 <b>BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
 `, { parse_mode: "HTML" });
-  await bot.telegram.sendMessage(botchat, "Balance!", keyboard)
+  await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
 
   handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
 };
