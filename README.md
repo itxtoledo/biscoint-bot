@@ -44,3 +44,4 @@ Não é recomendação de investimento!
 Observação: as contas pessoais recebem uma base de 550 horas dinâmicas gratuitas por mês. Além dessas horas-base, as contas verificadas com cartão de crédito receberão 450 horas adicionais à cota mensal gratuita do dinamômetro. Isso significa que você pode receber um total de 1000 horas dinâmicas gratuitas por mês, se verificar sua conta com um cartão de crédito.
 
 Como o bot ficará ligado 24h, considere adicionar o cartão (preferencialmente virtual) para ampliar suas horas-base mensais free para 1000 horas.
+Fonte: https://devcenter.heroku.com/articles/free-dyno-hours
