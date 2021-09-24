@@ -75,9 +75,9 @@ bot.hears('🔛 Test Mode', async (ctx) => {
 
 bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
-*Intervalo*: ${intervalMs}ms
-*Modo teste*: ${test}
-*Saldo*: ${amount}
+⏱️ *Intervalo*: ${intervalMs}ms
+ℹ️ *Modo teste*: ${ test ? 'ativado' : 'desativado' }
+💵 *Saldo*: ${amount}
     `, keyboard)
 }
 );
