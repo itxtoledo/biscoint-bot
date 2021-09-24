@@ -1,2 +1,49 @@
-# biscoint-bot
+# Deploy to Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/itxtoledo/biscoint-bot)
+
+Grupo no Telegram: https://t.me/bitragem
+
+# Disclaimer
+Nenhum proprietário ou contribuidor é responsável por qualquer coisa feita com este bot. Você o usa por sua própria conta e risco. Não há garantias expressas ou implícitas. Você assume toda a responsabilidade e obrigação.
+
+AVISO LEGAL:
+
+Todas as estratégias e investimentos envolvem risco de perda. Você nunca deve negociar com dinheiro que não pode ou tem medo de perder.
+
+Use por sua conta e risco! 
+
+VOCÊ É RESPONSÁVEL POR QUAISQUER PERDAS QUE POSSAM SER RESULTANTES DO USO DO BOT!
+
+Se você não entende como o bot funciona, não deve usá-lo. Você é sempre bem-vindo para pedir ajuda ou obter mais informações sobre como funciona exatamente.
+
+Não é recomendação de investimento!
+
+# Telegram
+1. Abra o https://t.me/BotFather
+2. Digite /newbot e siga as instruções abaixo:
+
+![image](https://user-images.githubusercontent.com/54438080/134407558-512d6a08-bb3c-45ed-8d49-0b48d597f364.png)
+
+3. Anote o TOKEN do bot
+
+![image](https://user-images.githubusercontent.com/54438080/134408189-a83e714b-9d91-423b-bcfd-7a690dbc71ae.png)
+
+
+4. Após criar o bot, clique nele para abrir
+
+![image](https://user-images.githubusercontent.com/54438080/134407708-5467712b-80fe-48a1-a86a-cae9ef549503.png)
+
+5. Clique em START
+
+![image](https://user-images.githubusercontent.com/54438080/134407755-81b76166-e510-4ead-b452-85c9bfaba7c6.png)
+
+6. Pegue o ID do seu bot acessando https://t.me/raw_data_bot
+
+![image](https://user-images.githubusercontent.com/54438080/134407981-9219652e-997e-4242-afbc-340371455e15.png)
+
+
+# Heroku
+Observação: as contas pessoais recebem uma base de 550 horas dinâmicas gratuitas por mês. Além dessas horas-base, as contas verificadas com cartão de crédito receberão 450 horas adicionais à cota mensal gratuita do dinamômetro. Isso significa que você pode receber um total de 1000 horas dinâmicas gratuitas por mês, se verificar sua conta com um cartão de crédito.
+
+Como o bot ficará ligado 24h, considere adicionar o cartão (preferencialmente virtual) para ampliar suas horas-base mensais free para 1000 horas.
+Fonte: https://devcenter.heroku.com/articles/free-dyno-hours
