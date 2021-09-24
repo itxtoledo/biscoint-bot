@@ -128,7 +128,7 @@ async function trade() {
     handleMessage(`Test mode: ${test}`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
-      bot.telegram.sendMessage(botchat, `Profit found: ${profit.toFixed(3)}%`, keyboard)
+      bot.telegram.sendMessage(botchat, `Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
       if (initialSell) {
         /* initial sell */
         try {
@@ -209,7 +209,11 @@ async function forceConfirm(side, oldPrice) {
     ) {
       await bc.confirmOffer({ offerId: offer.offerId });
       handleMessage("Success on retry");
-    } else throw "Error on forceConfirm, price is much distant";
+    } else { //throw "Error on forceConfirm, price is much distant";
+      bot.telegram.sendMessage(botchat, `
+      Erro ao Confirmar Ordem, o preço está muito distante.
+      Acesse a corretora e verifique!`, keyboard)
+    }
   } catch (error) {
     handleError("Error on force confirm", error);
     bot.telegram.sendMessage(botchat, `Error on force confirm: ${error}`, keyboard)
