@@ -31,7 +31,7 @@ let balances
 const keyboard = Markup.keyboard([
   ['🧾 Balance', '🔍 BTC Price'], // Row1 with 2 buttons
   ['☸ Configs', '📖 Help'], // Row2 with 2 buttons
-  ['🔛 Test Mode', '₿'] // Row3 with 2 buttons
+  ['🔛 Test Mode', '💵 Increase Amount', '₿'] // Row3 with 2 buttons
 ])
   .oneTime()
   .resize()
@@ -236,5 +236,16 @@ const checkBalances = async () => {
 
   handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
 };
+
+const startAmount = async () => {
+  try {
+    let { BRL, BTC } = await bc.balance();
+    let amountBTC = BTC - (BTC*0.10)
+    amount = amountBTC
+  } catch (error) {
+    handleMessage(JSON.stringify(error));
+    bot.telegram.sendMessage(botchat, JSON.stringify(error))
+  }
+}
 
 bot.launch()
