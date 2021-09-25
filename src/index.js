@@ -94,7 +94,7 @@ bot.hears('🔍 BTC Price', async (ctx) => {
 );
 
 bot.hears('💵 Increase Amount', async (ctx) => {
-  increaseAmount();
+  await increaseAmount();
 }
 );
 
@@ -245,7 +245,8 @@ const increaseAmount = async () => {
   try {
     let { BRL, BTC } = await bc.balance();
     let amountBTC = BTC - (BTC * 0.10)
-    amount = amountBTC
+    amount = amountBTC.toFixed(4)
+    bot.telegram.sendMessage(botchat, `Saldo em operação: ${amount}`)
   } catch (error) {
     handleMessage(JSON.stringify(error));
     bot.telegram.sendMessage(botchat, JSON.stringify(error))
