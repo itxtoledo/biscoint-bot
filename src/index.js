@@ -45,6 +45,7 @@ bot.hears('📖 Help', async (ctx) => {
   *🔍 BTC Price:* Último preço do Bitcoin na corretora.\n
   *☸ Configs:* Configurações do Bot.\n
   *🔛 Test Mode:* Ativar/Desativar modo simulação.\n
+  *💵 Increase Amount:* Fixa o valor em operação para 90% do saldo em BTC.\n
   *₿:* Acessar a corretora.\n
       ============
       `, keyboard)
