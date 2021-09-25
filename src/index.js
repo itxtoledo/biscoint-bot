@@ -126,7 +126,7 @@ async function trade() {
     if (differencelogger)
       handleMessage(`Variação de preço: ${profit.toFixed(3)}%`);
       handleMessage(`Test mode: ${test}`);
-      handleMessage(`intervalo: ${intervalMs}ms`);
+      handleMessage(`Intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
       bot.telegram.sendMessage(botchat, `Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
