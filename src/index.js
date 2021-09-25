@@ -79,7 +79,7 @@ bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
 ⏱️ *Intervalo*: ${intervalMs}ms
 ℹ️ *Modo teste*: ${test ? 'ativado' : 'desativado'}
-💵 *Saldo em operação*: ${amount}
+💵 *Valor em operação*: ${amount}
     `, keyboard)
 }
 );
@@ -235,8 +235,8 @@ const checkBalances = async () => {
   await bot.telegram.sendMessage(botchat,
     `\u{1F911} Balanço:
 <b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
-<b>BRL:</b> ${BRL} 
-<b>BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
+<b>Saldo BRL:</b> ${BRL} 
+<b>Saldo BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
 `, { parse_mode: "HTML" });
   await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
 
