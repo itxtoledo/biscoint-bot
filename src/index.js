@@ -31,7 +31,8 @@ let balances
 const keyboard = Markup.keyboard([
   ['🧾 Balance', '🔍 BTC Price'], // Row1 with 2 buttons
   ['☸ Configs', '📖 Help'], // Row2 with 2 buttons
-  ['🔛 Test Mode', '💵 Increase Amount', '₿'] // Row3 with 2 buttons
+  ['🔛 Test Mode', '💵 Increase Amount'], // Row3 with 2 buttons
+  ['₿ Biscoint'] // Row3 with 1 button
 ])
   .oneTime()
   .resize()
@@ -50,7 +51,7 @@ bot.hears('📖 Help', async (ctx) => {
 }
 );
 
-bot.hears('₿', async (ctx) => {
+bot.hears('₿ Biscoint', async (ctx) => {
   ctx.reply('Clique para acessar a corretora https://biscoint.io', keyboard);
 }
 );
