@@ -36,9 +36,9 @@ const keyboard = Markup.keyboard([
   .oneTime()
   .resize()
 
-  bot.hears('📖 Help', async (ctx) => {
-    ctx.replyWithMarkdown(
-  `*Comandos disponíveis:* 
+bot.hears('📖 Help', async (ctx) => {
+  ctx.replyWithMarkdown(
+    `*Comandos disponíveis:* 
       ============  
   *🧾 Balance:* Extrato resumido do saldo na corretora.\n
   *🔍 BTC Price:* Último preço do Bitcoin na corretora.\n
@@ -47,12 +47,12 @@ const keyboard = Markup.keyboard([
   *₿:* Acessar a corretora.\n
       ============
       `, keyboard)
-  }
-  );
+}
+);
 
 bot.hears('₿', async (ctx) => {
-    ctx.reply('Clique para acessar a corretora https://biscoint.io', keyboard);
-  }
+  ctx.reply('Clique para acessar a corretora https://biscoint.io', keyboard);
+}
 );
 
 bot.hears('🧾 Balance', async (ctx) => {
@@ -76,7 +76,7 @@ bot.hears('🔛 Test Mode', async (ctx) => {
 bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
 ⏱️ *Intervalo*: ${intervalMs}ms
-ℹ️ *Modo teste*: ${ test ? 'ativado' : 'desativado' }
+ℹ️ *Modo teste*: ${test ? 'ativado' : 'desativado'}
 💵 *Saldo*: ${amount}
     `, keyboard)
 }
@@ -125,7 +125,8 @@ async function trade() {
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
       handleMessage(`Variação de preço: ${profit.toFixed(3)}%`);
-    handleMessage(`Test mode: ${test}`);
+      handleMessage(`Test mode: ${test}`);
+      handleMessage(`intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
       bot.telegram.sendMessage(botchat, `Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
