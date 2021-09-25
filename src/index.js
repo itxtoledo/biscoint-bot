@@ -53,7 +53,7 @@ bot.hears('📖 Help', async (ctx) => {
 );
 
 bot.hears('₿ Biscoint', async (ctx) => {
-  ctx.reply('Clique para acessar a corretora https://biscoint.io', keyboard);
+  ctx.reply('Acesse a corretora https://biscoint.io', keyboard);
 }
 );
 
