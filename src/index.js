@@ -228,11 +228,8 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-  balances = await bc.balance().catch(e => {
-    if (e.code == 4003) {
-      console.log(e.details)
-    }
-  });
+  balances = await bc.balance().catch(e => console.log(e));
+  bc.balance().then(result => console.log(result.BRL)
   const { BRL, BTC } = balances;
   let priceBTC = await bc.ticker();
 
