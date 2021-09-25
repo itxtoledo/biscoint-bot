@@ -109,9 +109,6 @@ const limiter = new Bottleneck({
   maxConcurrent: 1,
 });
 
-handleMessage("\u{1F911} Iniciando Trades!");
-bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando Trades!', keyboard)
-
 let tradeCycleCount = 0;
 
 async function trade() {
@@ -197,10 +194,6 @@ async function trade() {
   }
 }
 
-setInterval(() => {
-  limiter.schedule(() => trade());
-}, intervalMs);
-
 async function forceConfirm(side, oldPrice) {
   try {
     const offer = await bc.offer({
@@ -263,4 +256,15 @@ const increaseAmount = async () => {
   }
 }
 
+async function start() {
+  handleMessage('Starting trades');
+  bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando trades!', keyboard);
+  await increaseAmount();
+  setInterval(() => {
+    limiter.schedule(() => trade());
+  }, intervalMs);
+}
+
 bot.launch()
+
+start().catch(e => handleMessage(JSON.stringify(e), 'error'));
