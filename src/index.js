@@ -228,8 +228,8 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-  balances = await bc.balance().catch(console.log);
-  const { BRL, BTC } = balances;
+  balances = await bc.balance();
+  const { BRL, BTC } = balances.catch(console.log);
   let priceBTC = await bc.ticker();
 
   await bot.telegram.sendMessage(botchat,
