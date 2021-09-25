@@ -58,7 +58,7 @@ bot.hears('₿ Biscoint', async (ctx) => {
 );
 
 bot.hears('🧾 Balance', async (ctx) => {
-  checkBalances();
+  checkBalances().catch(e => console.log(e));
 }
 );
 
