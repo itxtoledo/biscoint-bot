@@ -77,7 +77,7 @@ bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
 ⏱️ *Intervalo*: ${intervalMs}ms
 ℹ️ *Modo teste*: ${test ? 'ativado' : 'desativado'}
-💵 *Saldo*: ${amount}
+💵 *Saldo em operação*: ${amount}
     `, keyboard)
 }
 );
@@ -93,6 +93,10 @@ bot.hears('🔍 BTC Price', async (ctx) => {
 }
 );
 
+bot.hears('💵 Increase Amount', async (ctx) => {
+  increaseAmount();
+}
+);
 
 // Telegram End
 
@@ -125,8 +129,8 @@ async function trade() {
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
       handleMessage(`📈 Variação de preço: ${profit.toFixed(3)}%`);
-      handleMessage(`Test mode: ${test}`);
-      handleMessage(`Intervalo: ${intervalMs}ms`);
+    handleMessage(`Test mode: ${test}`);
+    handleMessage(`Intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
       bot.telegram.sendMessage(botchat, `\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
@@ -237,10 +241,10 @@ const checkBalances = async () => {
   handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
 };
 
-const startAmount = async () => {
+const increaseAmount = async () => {
   try {
     let { BRL, BTC } = await bc.balance();
-    let amountBTC = BTC - (BTC*0.10)
+    let amountBTC = BTC - (BTC * 0.10)
     amount = amountBTC
   } catch (error) {
     handleMessage(JSON.stringify(error));
