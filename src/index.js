@@ -228,7 +228,7 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-    bc.balance().then(result => console.log(result.BRL)
+    bc.balance().then(result => console.log(result.BRL))
 };
 
 const increaseAmount = async () => {
