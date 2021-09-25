@@ -253,7 +253,7 @@ const increaseAmount = async () => {
     let amountBTC = (BTC * 0.9).toFixed(5) // pega 90% do saldo em Bitcoin e coloca para operação
     if (amountBTC >= 0.0001) {
       amount = amountBTC
-      bot.telegram.sendMessage(botchat, `Valor em operação: ${amount}`, keyboard)
+      bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
       bot.telegram.sendMessage(botchat, `O valor mínimo para venda é de ฿ 0,00010000. Compre mais BTC!`, keyboard)
     }
