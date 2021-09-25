@@ -58,7 +58,7 @@ bot.hears('₿ Biscoint', async (ctx) => {
 );
 
 bot.hears('🧾 Balance', async (ctx) => {
-  checkBalances().catch(e => console.log(e));
+  await checkBalances();
 }
 );
 
@@ -228,20 +228,23 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-  bc.balance().then(result => {
-    const { BRL, BTC } = [result.BRL, result.BTC];
-    let priceBTC = await bc.ticker();
-    await bot.telegram.sendMessage(botchat,
-      `\u{1F911} Balanço:
+  try {
+  balances = await bc.balance();
+  const { BRL, BTC } = balances;
+  let priceBTC = await bc.ticker();
+
+  await bot.telegram.sendMessage(botchat,
+    `\u{1F911} Balanço:
 <b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
 <b>Saldo BRL:</b> ${BRL} 
 <b>Saldo BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
 `, { parse_mode: "HTML" });
-    await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
+  await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
 
-    handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
+  handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
+  } catch (e) {
+    bot.telegram.sendMessage(botchat, 'Máximo de 12 requisições por minuto. Tente novamente!')
   }
-  ).catch(e => console.log(e))
 };
 
 const increaseAmount = async () => {
