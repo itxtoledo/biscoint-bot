@@ -246,8 +246,8 @@ const checkBalances = async () => {
 const increaseAmount = async () => {
   try {
     //let { BRL, BTC } = await bc.balance();
-    let BTC = 0.0007
-    let amountBTC = (BTC * 0.9).toFixed(4) // pega 90% do valor em Bitcoin e coloca para operação
+    let BTC = 0.0006
+    let amountBTC = (BTC * 0.9).toFixed(5) // pega 90% do valor em Bitcoin e coloca para operação
     if (BTC < 0.0001) {
       bot.telegram.sendMessage(botchat, `O valor mínimo para venda é de ฿ 0,00010000. Compre mais BTC!`, keyboard)
     } else if (BTC >= 0.0001 && amountBTC >= 0.0001) {
