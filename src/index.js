@@ -124,7 +124,7 @@ async function trade() {
 
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
     if (differencelogger)
-      handleMessage(`Variação de preço: ${profit.toFixed(3)}%`);
+      handleMessage(`📈 Variação de preço: ${profit.toFixed(3)}%`);
       handleMessage(`Test mode: ${test}`);
       handleMessage(`Intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
