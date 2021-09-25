@@ -228,20 +228,7 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-  balances = await bc.balance().catch(e => console.log(e));
-  bc.balance().then(result => console.log(result.BRL)
-  const { BRL, BTC } = balances;
-  let priceBTC = await bc.ticker();
-
-  await bot.telegram.sendMessage(botchat,
-    `\u{1F911} Balanço:
-<b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
-<b>Saldo BRL:</b> ${BRL} 
-<b>Saldo BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
-`, { parse_mode: "HTML" });
-  await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
-
-  handleMessage(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
+    bc.balance().then(result => console.log(result.BRL)
 };
 
 const increaseAmount = async () => {
