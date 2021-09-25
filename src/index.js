@@ -228,7 +228,7 @@ async function forceConfirm(side, oldPrice) {
 }
 
 const checkBalances = async () => {
-  balances = await bc.balance();
+  balances = await bc.balance().catch(console.log);
   const { BRL, BTC } = balances;
   let priceBTC = await bc.ticker();
 
