@@ -63,11 +63,11 @@ bot.hears('🧾 Balance', async (ctx) => {
 bot.hears('🔛 Test Mode', async (ctx) => {
   if (test === false) {
     test = true
-    ctx.reply('\u{1F6D1} Modo test ativado!', keyboard);
+    ctx.reply('\u{1F6D1} Modo teste ativado!', keyboard);
     checkBalances();
   } else {
     test = false
-    ctx.replyWithMarkdown(`\u{1F911} Modo test desativado!`, keyboard);
+    ctx.replyWithMarkdown(`\u{1F911} Modo teste desativado!`, keyboard);
     checkBalances();
   }
 }
