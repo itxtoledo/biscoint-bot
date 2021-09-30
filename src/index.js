@@ -106,7 +106,7 @@ const checkInterval = async () => {
   const { endpoints } = await bc.meta();
   const { windowMs, maxRequests } = endpoints.offer.post.rateLimit;
   handleMessage(`Offer Rate limits: ${maxRequests} request per ${windowMs}ms.`);
-  let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) + 200;
+  let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) + 600;
 
   if (!intervalMs) {
     intervalMs = minInterval;
