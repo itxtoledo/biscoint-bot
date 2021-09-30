@@ -260,13 +260,7 @@ const adjustAmount = async () => {
     balances = await bc.balance();
     const { BRL, BTC } = balances;
     let amountBTC = (BTC * 0.9).toFixed(5)
-    let amountBRL = BRL * 0.9
-    if (!initialSell && amountBRL >= 50) {
-      amount = amountBRL;
-      console.log(amount)
-      console.log(initialSell)
-      bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
-    } else if (initialSell && amountBTC >= 0.0001) {
+    if (initialSell && amountBTC >= 0.0001) {
       amount = amountBTC;
       console.log(amount)
       console.log(initialSell)
@@ -274,8 +268,9 @@ const adjustAmount = async () => {
     } else {
       bot.telegram.sendMessage(botchat, `
       Verifique seus saldos!
-      BRL tem que ser maior do que R$ 50
-      BTC tem que ser maior do que 0.0001`, keyboard)
+      1. BTC tem que ser maior do que 0.0001
+      2. Setar initialSell para 'true' na plataforma Heroku
+      3. Se seu saldo estiver em Reais, compre Bitcoin na Biscoint!`, keyboard)
     }
   } catch (error) {
     handleMessage(JSON.stringify(error));
