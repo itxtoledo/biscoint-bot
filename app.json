@@ -30,7 +30,7 @@
       "required": true
     },
     "amount": {
-      "description": "Se 'initialSell' for 'true', preencha o valor em Bitcoin. Valor padrão: 0.001",
+      "description": "Se 'initialSell' for 'true', preencha o valor em Bitcoin. O bot irá usar 90% do seu saldo. Valor padrão: 0.001",
       "required": true,
       "value": "0.001"
     },
