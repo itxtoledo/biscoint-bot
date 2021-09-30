@@ -50,7 +50,7 @@
       "value": "false"
     },
     "differencelogger": {
-      "description": "Logs do bot",
+      "description": "Logs do bot. Deixe 'true' para exibir no terminal ou 'false' para ocultar. Valor padrão: true",
       "required": true,
       "value": "true"
     },
