@@ -8,7 +8,7 @@ module.exports = envalid.cleanEnv(process.env, {
     apiSecret: envalid.str({ default: "" }),
     amount: envalid.num({ default: "0.001" }),
     initialSell: envalid.bool({ default: true }),
-    intervalMs: envalid.num( { default: null } ),
+    intervalMs: envalid.num( { default: "" } ),
     test: envalid.bool({ default: false }),
     differencelogger: envalid.bool({ default: true }),
     token: envalid.str({ default: "" }),
