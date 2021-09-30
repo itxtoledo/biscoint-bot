@@ -40,7 +40,7 @@
       "value": "true"
     },
     "intervalMs": {
-      "description": "Tempo mínimo entre verificações de arbitragem. Deixe 'null' para Valor padrão: null",
+      "description": "Tempo mínimo entre verificações de arbitragem. Deixe 'null' para o robô calcular o tempo mínimo da corretora",
       "required": true,
       "value": "null"
     },
