@@ -41,7 +41,7 @@
     },
     "intervalMs": {
       "description": "Tempo mínimo entre verificações de arbitragem. Deixe o campo vazio para o robô calcular o tempo mínimo da corretora",
-      "required": true,
+      "required": false,
       "value": ""
     },
     "test": {
