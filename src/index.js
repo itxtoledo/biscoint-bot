@@ -108,8 +108,12 @@ const checkInterval = async () => {
   handleMessage(`Offer Rate limits: ${maxRequests} request per ${windowMs}ms.`);
   let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests);
 
-  intervalMs = minInterval;
-
+  if (!intervalMs) {
+    intervalMs = minInterval;
+    handleMessage(`Setting interval to ${intervalMs}ms`);
+  } else if (intervalMs < minInterval) {
+    handleMessage(`Interval too small (${intervalMs}ms). Must be higher than ${minInterval}ms`, 'error', true);
+  }
 };
 
 const limiter = new Bottleneck({

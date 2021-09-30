@@ -35,9 +35,14 @@
       "value": "0.001"
     },
     "initialSell": {
-      "description": "Se o seu amount está em Bitcoin deixe 'true'. Valor padrão: true",
+      "description": "Se o seu saldo inicial está em reais, use false, se está em BTC, use true. Valor padrão: true",
       "required": true,
       "value": "true"
+    },
+    "intervalMs": {
+      "description": "Tempo mínimo entre verificações de arbitragem. Deixe 'null' para Valor padrão: null",
+      "required": true,
+      "value": "null"
     },
     "test": {
       "description": "Ativar modo simulação",
