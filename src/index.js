@@ -30,9 +30,8 @@ let balances
 
 const keyboard = Markup.keyboard([
   ['🧾 Balance', '🔍 BTC Price'], // Row1 with 2 buttons
-  ['☸ Configs', '💵 Increase Amount'], // Row2 with 2 buttons
-  ['🔛 Test Mode', '📖 Help'], // Row3 with 2 buttons
-  ['₿ Biscoint'] // Row3 with 1 button
+  ['☸ Configs', '🔛 Test Mode'], // Row2 with 2 buttons
+  ['📖 Help', '₿ Biscoint'] // Row3 with 2 buttons
 ])
   .oneTime()
   .resize()
@@ -45,7 +44,6 @@ bot.hears('📖 Help', async (ctx) => {
   *🔍 BTC Price:* Último preço do Bitcoin na corretora.\n
   *☸ Configs:* Configurações do Bot.\n
   *🔛 Test Mode:* Ativar/Desativar modo simulação.\n
-  *💵 Increase Amount:* Fixa o valor em operação para 90% do saldo em BTC.\n
   *₿:* Acessar a corretora.\n
       ============
       `, keyboard)
@@ -79,6 +77,7 @@ bot.hears('☸ Configs', (ctx) => {
   ctx.replyWithMarkdown(`
 ⏱️ *Intervalo*: ${intervalMs}ms
 ℹ️ *Modo teste*: ${test ? 'ativado' : 'desativado'}
+ℹ️ *InitialSell*: ${initialSell ? 'ativado' : 'desativado'}
 💵 *Valor em operação*: ${amount}
     `, keyboard)
 }
@@ -95,12 +94,23 @@ bot.hears('🔍 BTC Price', async (ctx) => {
 }
 );
 
-bot.hears('💵 Increase Amount', async (ctx) => {
-  await increaseAmount();
+bot.hears('💵 Adjust Amount', async (ctx) => {
+  await adjustAmount();
 }
 );
 
 // Telegram End
+
+// Checks that the configured interval is within the allowed rate limit.
+const checkInterval = async () => {
+  const { endpoints } = await bc.meta();
+  const { windowMs, maxRequests } = endpoints.offer.post.rateLimit;
+  handleMessage(`Offer Rate limits: ${maxRequests} request per ${windowMs}ms.`);
+  let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
+
+  intervalMs = minInterval;
+
+};
 
 const limiter = new Bottleneck({
   reservoir: 30,
@@ -132,7 +142,6 @@ async function trade() {
     handleMessage(`Intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
-      bot.telegram.sendMessage(botchat, `\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
       if (initialSell) {
         /* initial sell */
         try {
@@ -149,6 +158,7 @@ async function trade() {
                 3
               )}%, cycles: ${tradeCycleCount}`
             );
+            bot.telegram.sendMessage(botchat, `\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
           } catch (error) {
             handleError("Error on buy, retrying", error);
             await forceConfirm("buy", sellOffer.efPrice);
@@ -175,6 +185,7 @@ async function trade() {
                 3
               )}%, cycles: ${tradeCycleCount}`
             );
+            bot.telegram.sendMessage(botchat, `\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`, keyboard)
           } catch (error) {
             handleError("Error on sell, retrying", error);
             await forceConfirm("sell", buyOffer.efPrice);
@@ -216,7 +227,7 @@ async function forceConfirm(side, oldPrice) {
     }
   } catch (error) {
     handleError("Error on force confirm", error);
-    bot.telegram.sendMessage(botchat, `Error on force confirm: ${error}`, keyboard)
+    bot.telegram.sendMessage(botchat, `Erro ao confirmar: ${error}`, keyboard)
   }
 }
 
@@ -240,15 +251,27 @@ const checkBalances = async () => {
   }
 };
 
-const increaseAmount = async () => {
+const adjustAmount = async () => {
   try {
-    let { BRL, BTC } = await bc.balance();
-    let amountBTC = (BTC * 0.9).toFixed(5) // pega 90% do saldo em Bitcoin e coloca para operação
-    if (amountBTC >= 0.0001) {
-      amount = amountBTC
+    balances = await bc.balance();
+    const { BRL, BTC } = balances;
+    let amountBTC = (BTC * 0.9).toFixed(5)
+    let amountBRL = BRL * 0.9
+    if (!initialSell && amountBRL >= 50) {
+      amount = amountBRL;
+      console.log(amount)
+      console.log(initialSell)
+      bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
+    } else if (initialSell && amountBTC >= 0.0001) {
+      amount = amountBTC;
+      console.log(amount)
+      console.log(initialSell)
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
-      bot.telegram.sendMessage(botchat, `O valor mínimo para venda é de ฿ 0,00010000. Compre mais BTC!`, keyboard)
+      bot.telegram.sendMessage(botchat, `
+      Verifique seus saldos!
+      BRL tem que ser maior do que R$ 50
+      BTC tem que ser maior do que 0.0001`, keyboard)
     }
   } catch (error) {
     handleMessage(JSON.stringify(error));
@@ -259,7 +282,8 @@ const increaseAmount = async () => {
 async function start() {
   handleMessage('Starting trades');
   bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando trades!', keyboard);
-  await increaseAmount();
+  await checkInterval();
+  await adjustAmount();
   setInterval(() => {
     limiter.schedule(() => trade());
   }, intervalMs);

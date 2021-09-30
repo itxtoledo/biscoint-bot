@@ -30,19 +30,14 @@
       "required": true
     },
     "amount": {
-      "description": "Valor em Bitcoin que será usado para fazer arbitragem. Deixe um valor menor do que o saldo na corretora, pois o robô pode ficar vendido ou comprado em alguma operação.",
+      "description": "Se 'initialSell' for 'true', preencha o valor em Bitcoin. Valor padrão: 0.001",
       "required": true,
       "value": "0.001"
     },
     "initialSell": {
-      "description": "Se o seu saldo estiver em Bitcoin, deixe o campo como true. Valor padrao: true",
+      "description": "Se o seu amount está em Bitcoin deixe 'true'. Valor padrão: true",
       "required": true,
       "value": "true"
-    },
-    "intervalMs": {
-      "description": "Intervalo em milissegundo.",
-      "required": true,
-      "value": "5500"
     },
     "test": {
       "description": "Ativar modo simulação",
