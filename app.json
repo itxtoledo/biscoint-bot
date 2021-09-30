@@ -35,7 +35,7 @@
       "value": "0.001"
     },
     "initialSell": {
-      "description": "Se o seu saldo inicial está em reais, use false, se está em BTC, use true. Valor padrão: true",
+      "description": "Se o seu saldo inicial está em reais, use 'false', se está em BTC, use 'true'. Valor padrão: true",
       "required": true,
       "value": "true"
     },
