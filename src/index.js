@@ -265,13 +265,7 @@ const adjustAmount = async () => {
       console.log(amount)
       console.log(initialSell)
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
-    } else {
-      bot.telegram.sendMessage(botchat, `
-      Verifique seus saldos!
-      1. BTC tem que ser maior do que 0.0001
-      2. Setar initialSell para 'true' na plataforma Heroku
-      3. Se seu saldo estiver em Reais, compre Bitcoin na Biscoint!`, keyboard)
-    }
+    } 
   } catch (error) {
     handleMessage(JSON.stringify(error));
     bot.telegram.sendMessage(botchat, JSON.stringify(error))
