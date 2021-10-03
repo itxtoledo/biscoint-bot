@@ -173,6 +173,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first buy");
+            await adjustAmount();
           }
         }
       } else {
@@ -200,6 +201,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first sell");
+            await adjustAmount();
           }
         }
       }
