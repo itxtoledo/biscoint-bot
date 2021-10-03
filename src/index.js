@@ -265,7 +265,10 @@ const adjustAmount = async () => {
       console.log(amount)
       console.log(initialSell)
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
-    } 
+    } else {
+      amount = BRL
+      bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
+    }
   } catch (error) {
     handleMessage(JSON.stringify(error));
     bot.telegram.sendMessage(botchat, JSON.stringify(error))
