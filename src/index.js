@@ -173,7 +173,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first buy");
-            await adjustAmount();
+            await adjustAmount(); // persistir variável no heroku
           }
         }
       } else {
@@ -201,7 +201,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first sell");
-            await adjustAmount();
+            await adjustAmount(); // persistir variável no heroku
           }
         }
       }
@@ -261,14 +261,14 @@ const adjustAmount = async () => {
   try {
     balances = await bc.balance();
     const { BRL, BTC } = balances;
-    let amountBTC = (BTC * 0.95).toFixed(5)
+    let amountBTC = (BTC * 0.95).toFixed(5) 
     if (amountBTC >= 0.0001) {
       amount = amountBTC;
-      initialSell = true;
+      initialSell = true; // persistir variável no heroku
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
       amount = BRL
-      initialSell = false
+      initialSell = false // persistir variável no heroku
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     }
   } catch (error) {
