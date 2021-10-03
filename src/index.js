@@ -275,7 +275,6 @@ const adjustAmount = async () => {
 async function start() {
   handleMessage('Starting trades');
   bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando trades!', keyboard);
-  
   await checkInterval();
   await adjustAmount();
   setInterval(() => {
