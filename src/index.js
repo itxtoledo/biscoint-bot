@@ -267,8 +267,7 @@ const adjustAmount = async () => {
       initialSell = true; // persistir variável no heroku
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
-      amount = BTC
-      initialSell = false // persistir variável no heroku
+      initialSell = false // persistir variável no heroku e initial buy
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     }
   } catch (error) {
