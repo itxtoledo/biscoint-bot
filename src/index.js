@@ -3,6 +3,8 @@ import Bottleneck from "bottleneck";
 import { handleMessage, handleError, percent } from "./utils";
 //import config from "./config.js";
 import { Telegraf, Markup } from 'telegraf';
+import { exec } from "child_process";
+
 
 //let { amount, initialSell, intervalMs, test, differencelogger } = config;
 
@@ -282,6 +284,17 @@ async function start() {
   bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando trades!', keyboard);
   await checkInterval();
   await adjustAmount();
+  exec("heroku config:set initialSell false", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+});
   setInterval(() => {
     limiter.schedule(() => trade());
   }, intervalMs);
