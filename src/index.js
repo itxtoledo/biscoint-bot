@@ -260,7 +260,9 @@ const checkBalances = async () => {
 const adjustAmount = async () => {
   try {
     balances = await bc.balance();
+    let { last } = await bc.ticker();
     const { BRL, BTC } = balances;
+    let amountBRL = ((BRL * 0.95)/last).toFixed(5)
     let amountBTC = (BTC * 0.95).toFixed(5) 
     if (amountBTC >= 0.0001) {
       amount = amountBTC;
@@ -268,6 +270,7 @@ const adjustAmount = async () => {
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
       initialSell = false // persistir variável no heroku e initial buy
+      amount = amountBRL
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     }
   } catch (error) {
