@@ -146,6 +146,7 @@ async function trade() {
     handleMessage(`Intervalo: ${intervalMs}ms`);
     if (buyOffer.efPrice < sellOffer.efPrice && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
+      await adjustAmount(); // persistir variável no heroku
       if (initialSell) {
         /* initial sell */
         try {
