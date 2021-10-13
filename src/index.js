@@ -170,7 +170,7 @@ async function trade() {
           }
         } catch (error) {
           handleError("Error on sell", error);
-          bot.telegram.sendMessage(botchat, `Error on sell: ${error}`, keyboard)
+          bot.telegram.sendMessage(botchat, `Error on sell: ${JSON.stringify(error)}`, keyboard)
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first buy");
@@ -198,7 +198,7 @@ async function trade() {
           }
         } catch (error) {
           handleError("Error on buy", error);
-          bot.telegram.sendMessage(botchat, `Error on buy: ${error}`, keyboard)
+          bot.telegram.sendMessage(botchat, `Error on buy: ${JSON.stringify(error)}`, keyboard)
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first sell");
