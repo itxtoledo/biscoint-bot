@@ -19,6 +19,7 @@ const bc = new Biscoint({
 // Telegram
 const bot = new Telegraf(token)
 let balances
+let minProfitPercent = 0.3
 
 // const keyboard = Markup.inlineKeyboard(
 //   [
@@ -144,7 +145,7 @@ async function trade() {
       handleMessage(`📈 Variação de preço: ${profit.toFixed(3)}%`);
     handleMessage(`Test mode: ${test}`);
     handleMessage(`Intervalo: ${intervalMs}ms`);
-    if (buyOffer.efPrice < sellOffer.efPrice && !test) {
+    if (profit >= minProfitPercent && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
       await adjustAmount(); // persistir variável no heroku
       if (initialSell) {
