@@ -235,7 +235,8 @@ async function forceConfirm(side, oldPrice) {
     }
   } catch (error) {
     handleError("Error on force confirm", error);
-    bot.telegram.sendMessage(botchat, `Erro ao confirmar: ${error}`, keyboard)
+    bot.telegram.sendMessage(botchat, `Erro ao confirmar: ${JSON.stringify(error)}`, keyboard)
+    await adjustAmount(); // persistir variável no heroku
   }
 }
 
