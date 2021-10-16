@@ -7,7 +7,7 @@ import { Telegraf, Markup } from 'telegraf';
 //let { amount, initialSell, intervalMs, test, differencelogger } = config;
 
 let {
-  apiKey, apiSecret, amount, initialSell, intervalMs, test,
+  apiKey, apiSecret, amount, initialDeposit, initialDate, minProfitPercent, initialSell, intervalMs, test,
   differencelogger, token, botchat
 } = require("./env")
 
@@ -19,7 +19,6 @@ const bc = new Biscoint({
 // Telegram
 const bot = new Telegraf(token)
 let balances
-let minProfitPercent = 0.3
 
 // const keyboard = Markup.inlineKeyboard(
 //   [
@@ -246,11 +245,37 @@ const checkBalances = async () => {
     const { BRL, BTC } = balances;
     let priceBTC = await bc.ticker();
 
+    // Pegando a data
+    let data = initialDate
+
+    // Precisamos quebrar a string para retornar cada parte
+    const dataSplit = data.split('/');
+
+    const day = dataSplit[0]; // 30
+    const month = dataSplit[1]; // 03
+    const year = dataSplit[2]; // 2019
+
+    // Agora podemos inicializar o objeto Date, lembrando que o mês começa em 0, então fazemos -1.
+    data = new Date(year, month - 1, day);
+    const now = new Date(); // Data de hoje
+    const past = new Date(data); // Outra data no passado
+    const diff = Math.abs(now.getTime() - past.getTime()); // Subtrai uma data pela outra
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24)); // Divide o total pelo total de milisegundos correspondentes a 1 dia. (1000 milisegundos = 1 segundo).
+
+    // Cálculo do lucro 
+    let profitBRLBTC = Number(BRL) + ((Number(priceBTC.last * BTC)))
+    let realizedProfit = percent(amountInitial, profitBRLBTC)
+
     await bot.telegram.sendMessage(botchat,
       `\u{1F911} Balanço:
 <b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
-<b>Saldo BRL:</b> ${BRL} 
+<b>Data inicial</b>: ${initialDate}
+<b>Dias ativado</b>: ${days}
+<b>Depósito inicial</b>: R$ ${amountInitial.toFixed(2)}
+<b>Saldo BRL:</b> R$ ${BRL} 
 <b>Saldo BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
+<b>Operando com</b>: ${amount}
+<b>Saldo (BRL + BTC):</b> ${realizedProfit.toFixed(2)}% (R$ ${(profitBRLBTC - amountInitial).toFixed(2)});
 `, { parse_mode: "HTML" });
     await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
 
@@ -265,8 +290,8 @@ const adjustAmount = async () => {
     balances = await bc.balance();
     let { last } = await bc.ticker();
     const { BRL, BTC } = balances;
-    let amountBRL = ((BRL * 0.95)/last).toFixed(5)
-    let amountBTC = (BTC * 0.95).toFixed(5) 
+    let amountBRL = ((BRL * 0.95) / last).toFixed(5)
+    let amountBTC = (BTC * 0.95).toFixed(5)
     if (amountBTC >= 0.0001) {
       amount = amountBTC;
       initialSell = true; // persistir variável no heroku
