@@ -264,18 +264,18 @@ const checkBalances = async () => {
 
     // Cálculo do lucro 
     let profitBRLBTC = Number(BRL) + ((Number(priceBTC.last * BTC)))
-    let realizedProfit = percent(amountInitial, profitBRLBTC)
+    let realizedProfit = percent(initialDeposit, profitBRLBTC)
 
     await bot.telegram.sendMessage(botchat,
       `\u{1F911} Balanço:
 <b>Status</b>: ${!test ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Modo simulação.`} 
 <b>Data inicial</b>: ${initialDate}
 <b>Dias ativado</b>: ${days}
-<b>Depósito inicial</b>: R$ ${amountInitial.toFixed(2)}
+<b>Depósito inicial</b>: R$ ${initialDeposit.toFixed(2)}
 <b>Saldo BRL:</b> R$ ${BRL} 
 <b>Saldo BTC:</b> ${BTC} (R$ ${(priceBTC.last * BTC).toFixed(2)})
 <b>Operando com</b>: ${amount}
-<b>Saldo (BRL + BTC):</b> ${realizedProfit.toFixed(2)}% (R$ ${(profitBRLBTC - amountInitial).toFixed(2)});
+<b>Saldo (BRL + BTC):</b> ${realizedProfit.toFixed(2)}% (R$ ${(profitBRLBTC - initialDeposit).toFixed(2)});
 `, { parse_mode: "HTML" });
     await bot.telegram.sendMessage(botchat, "Extrato resumido. Para maiores detalhes, acesse a corretora Biscoint!", keyboard)
 
