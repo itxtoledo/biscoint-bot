@@ -140,13 +140,13 @@ async function trade() {
     });
 
     const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
-    if (differencelogger)
+    if (differencelogger) {
       handleMessage(`📈 Variação de preço: ${profit.toFixed(3)}%`);
-    handleMessage(`Test mode: ${test}`);
-    handleMessage(`Intervalo: ${intervalMs}ms`);
+      handleMessage(`Test mode: ${test}`);
+      handleMessage(`Intervalo: ${intervalMs}ms`);
+    }
     if (profit >= minProfitPercent && !test) {
       handleMessage(`\u{1F911} Sucesso! Lucro: ${profit.toFixed(3)}%`);
-      await adjustAmount(); // persistir variável no heroku
       if (initialSell) {
         /* initial sell */
         try {
@@ -174,7 +174,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first buy");
-            await adjustAmount(); // persistir variável no heroku
+            await adjustAmount(); // adjust amount
           }
         }
       } else {
@@ -202,7 +202,7 @@ async function trade() {
           if (error.error === "Insufficient funds") {
             initialSell = !initialSell;
             handleMessage("Switched to first sell");
-            await adjustAmount(); // persistir variável no heroku
+            await adjustAmount(); // adjust amount
           }
         }
       }
@@ -227,15 +227,16 @@ async function forceConfirm(side, oldPrice) {
     ) {
       await bc.confirmOffer({ offerId: offer.offerId });
       handleMessage("Success on retry");
+      await adjustAmount(); // adjust amount
     } else { //throw "Error on forceConfirm, price is much distant";
       bot.telegram.sendMessage(botchat, `
-      Erro ao Confirmar Ordem, o preço está muito distante.
-      Acesse a corretora e verifique!`, keyboard)
+      Erro ao Confirmar Ordem, o preço está muito distante!`, keyboard)
+      await adjustAmount(); // adjust amount
     }
   } catch (error) {
     handleError("Error on force confirm", error);
     bot.telegram.sendMessage(botchat, `Erro ao confirmar: ${JSON.stringify(error)}`, keyboard)
-    await adjustAmount(); // persistir variável no heroku
+    await adjustAmount(); // adjust amount
   }
 }
 
@@ -290,14 +291,14 @@ const adjustAmount = async () => {
     balances = await bc.balance();
     let { last } = await bc.ticker();
     const { BRL, BTC } = balances;
-    let amountBRL = ((BRL * 0.95) / last).toFixed(5)
-    let amountBTC = (BTC * 0.95).toFixed(5)
+    let amountBRL = ((BRL * 0.90) / last).toFixed(5)
+    let amountBTC = (BTC * 0.90).toFixed(5)
     if (amountBTC >= 0.0001) {
       amount = amountBTC;
-      initialSell = true; // persistir variável no heroku
+      initialSell = true; // initial sell
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     } else {
-      initialSell = false // persistir variável no heroku e initial buy
+      initialSell = false // initial buy
       amount = amountBRL
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
     }
