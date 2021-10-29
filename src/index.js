@@ -293,7 +293,7 @@ const adjustAmount = async () => {
     const { BRL, BTC } = balances;
     let amountBRL = ((BRL * 0.90) / last).toFixed(5)
     let amountBTC = (BTC * 0.90).toFixed(5)
-    if (amountBTC >= 0.0001) {
+    if (amountBTC >= 0.0001 && amountBTC > amountBRL) {
       amount = amountBTC;
       initialSell = true; // initial sell
       bot.telegram.sendMessage(botchat, `💵 *Valor em operação*: ${amount}`, keyboard)
