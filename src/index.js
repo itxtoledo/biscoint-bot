@@ -99,6 +99,12 @@ bot.hears('💵 Adjust Amount', async (ctx) => {
 }
 );
 
+bot.hears(/^\/comprar (.+)$/, async ctx => {
+  let valor = ctx.match[1];
+  buyBTC(valor)
+}
+)
+
 // Telegram End
 
 // Checks that the configured interval is within the allowed rate limit.
@@ -285,6 +291,45 @@ const checkBalances = async () => {
     bot.telegram.sendMessage(botchat, 'Máximo de 12 requisições por minuto. Tente novamente em alguns instantes!')
   }
 };
+
+async function buyBTC(valor) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        if (valor >= 50) {
+          let buyOffer = await bc.offer({
+            amount: valor,
+            isQuote: true,
+            op: "buy"
+          });
+          try {
+            await bc.confirmOffer({
+              offerId: buyOffer.offerId,
+            });
+            bot.telegram.sendMessage(botchat, `Compra de ${valor} em BTC efetuada com sucesso!`);
+            resolve(true)
+          } catch (error) {
+            if (error.error === "Insufficient funds") {
+              bot.telegram.sendMessage(botchat, `Você não tem saldo suficiente em BRL!`, keyboard);
+            } else {
+              bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`);
+            }
+            reject(false)
+          }
+        }
+        else {
+          bot.telegram.sendMessage(botchat, "Valor de compra abaixo do limite mínimo de 50 reais", keyboard);
+          reject(false)
+        }
+      } catch (error) {
+        bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`, keyboard);
+        reject(false)
+      }
+    })();
+  }).catch(err => {
+    console.error(err)
+  })
+}
 
 const adjustAmount = async () => {
   try {
