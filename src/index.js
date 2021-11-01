@@ -101,7 +101,8 @@ bot.hears('💵 Adjust Amount', async (ctx) => {
 
 bot.hears(/^\/comprar (.+)$/, async ctx => {
   let valor = ctx.match[1];
-  buyBTC(valor)
+  await buyBTC(valor);
+  await adjustAmount();
 }
 )
 
