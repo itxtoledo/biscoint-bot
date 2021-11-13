@@ -30,19 +30,19 @@
       "required": true
     },
     "amount": {
-      "description": "Valor em Bitcoin que será usado para fazer arbitragem. Deixe um valor menor do que o saldo na corretora, pois o robô pode ficar vendido ou comprado em alguma operação.",
+      "description": "O bot irá usar 90% do seu saldo. Deixe o campo com o valor padrão e o bot fará o cálculo automaticamente. Valor padrão: 0.001",
       "required": true,
       "value": "0.001"
     },
     "initialSell": {
-      "description": "Se o seu saldo estiver em Bitcoin, deixe o campo como true. Valor padrao: true",
+      "description": "Indica se o bot iniciará vendendo. Valor padrao: true",
       "required": true,
       "value": "true"
     },
     "intervalMs": {
-      "description": "Intervalo em milissegundo.",
-      "required": true,
-      "value": "5500"
+      "description": "Tempo mínimo entre verificações de arbitragem. Deixe o campo vazio para o robô calcular o tempo mínimo da corretora",
+      "required": false,
+      "value": ""
     },
     "test": {
       "description": "Ativar modo simulação",
@@ -50,7 +50,7 @@
       "value": "false"
     },
     "differencelogger": {
-      "description": "Logs do bot",
+      "description": "Logs do bot. Deixe 'true' para exibir no terminal ou 'false' para ocultar. Valor padrão: true",
       "required": true,
       "value": "true"
     },
@@ -61,6 +61,21 @@
     "token": {
       "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
       "required": true
+    },
+    "minProfitPercent": {
+      "description": "Informe o lucro mínimo potencial, em percentual, para que o robô tente executar a arbitragem. Por exemplo, informe 0.01 para que o robô execute arbitragem sempre que o lucro potencial seja igual ou maior a 0,01%. Valor padrão: 0.03",
+      "required": true,
+      "value": "0.03"
+    },
+    "initialDate": {
+      "description": "Data que o bot iniciou. xx/xx/xxxx. Valor padrão: 01/09/2021",
+      "required": true,
+      "value": "01/09/2021"
+    },
+    "initialDeposit": {
+      "description": "Valor inicial, em reais, que você depositou. Valor padrão: 300",
+      "required": true,
+      "value": "300"
     }
   }
 }
