@@ -30,7 +30,7 @@
       "required": true
     },
     "amount": {
-      "description": "Preencha o valor em Bitcoin. O bot irá usar 90% do seu saldo. Deixe o campo com o valor padrão e o bot fará o cálculo automaticamente. Valor padrão: 0.001",
+      "description": "O bot irá usar 90% do seu saldo. Deixe o campo com o valor padrão e o bot fará o cálculo automaticamente. Valor padrão: 0.001",
       "required": true,
       "value": "0.001"
     },
